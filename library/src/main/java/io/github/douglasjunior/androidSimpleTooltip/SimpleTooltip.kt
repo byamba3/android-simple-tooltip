@@ -224,14 +224,14 @@ class SimpleTooltip(
 
     private fun configPopupWindow() {
         popupWindow = PopupWindow(context, null, mDefaultPopupWindowStyleRes)
-        popupWindow?.let { popupWindow ->
-            popupWindow.setOnDismissListener(this)
-            popupWindow.width = width
-            popupWindow.height = height
-            popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            popupWindow.isOutsideTouchable = true
-            popupWindow.isTouchable = true
-            popupWindow.setTouchInterceptor(View.OnTouchListener { v, event ->
+        popupWindow?.run {
+            setOnDismissListener(this@SimpleTooltip)
+            width = width
+            height = height
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            isOutsideTouchable = true
+            isTouchable = true
+            setTouchInterceptor(View.OnTouchListener { v, event ->
                 val x = event.x.toInt()
                 val y = event.y.toInt()
 
@@ -248,8 +248,8 @@ class SimpleTooltip(
                 }
                 false
             })
-            popupWindow.isClippingEnabled = false
-            popupWindow.isFocusable = focusable
+            isClippingEnabled = false
+            isFocusable = focusable
         }
     }
 
