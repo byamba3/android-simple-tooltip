@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.PointF
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.support.annotation.IdRes
 import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -24,8 +23,6 @@ class SimpleTooltip(
         private var dismissOnInsideTouch: Boolean = true,
         private var dismissOnOutsideTouch: Boolean = true,
         private var modal: Boolean = false,
-        @IdRes
-        private var textViewId: Int = android.R.id.text1,
         private var text: CharSequence = "",
         private var anchorView: View,
         private var arrowDirection: Int = ArrowDrawable.AUTO,
@@ -47,7 +44,7 @@ class SimpleTooltip(
         private var animationDuration: Long =
                 context.resources.getInteger(mDefaultAnimationDurationRes).toLong(),
         private var backgroundColor: Int =
-                SimpleTooltipUtils.getColor(context, R.color.colorAccent),
+                SimpleTooltipUtils.getColor(context, mDefaultBackgroundColorRes),
         private var textColor: Int = SimpleTooltipUtils.getColor(context, mDefaultTextColorRes),
         private var arrowColor: Int = SimpleTooltipUtils.getColor(context, mDefaultArrowColorRes),
         private var arrowHeight: Float = 0f,
@@ -74,6 +71,8 @@ class SimpleTooltip(
             it.setTextColor(textColor)
         }
     }
+    val isShowing: Boolean
+        get() = popupWindow?.isShowing == true
 
     companion object {
         private val TAG = SimpleTooltip::class.java.simpleName
@@ -224,7 +223,8 @@ class SimpleTooltip(
     }
 
     private fun configPopupWindow() {
-        PopupWindow(context, null, mDefaultPopupWindowStyleRes).let { popupWindow ->
+        popupWindow = PopupWindow(context, null, mDefaultPopupWindowStyleRes)
+        popupWindow?.let { popupWindow ->
             popupWindow.setOnDismissListener(this)
             popupWindow.width = width
             popupWindow.height = height
@@ -251,9 +251,7 @@ class SimpleTooltip(
             popupWindow.isClippingEnabled = false
             popupWindow.isFocusable = focusable
         }
-
     }
-
 
     fun show() {
         verifyDismissed()
@@ -262,11 +260,10 @@ class SimpleTooltip(
         contentLayout.viewTreeObserver.addOnGlobalLayoutListener(mAutoDismissLayoutListener)
 
         rootView?.let {
-            Log.d("TooltipTest", "Worked")
             it.post {
-                if (rootView?.isShown == true)
+                if (rootView?.isShown == true) {
                     popupWindow?.showAtLocation(rootView, Gravity.NO_GRAVITY, it.width, it.height)
-                else
+                } else
                     Log.e(TAG, "Tooltip can't be shown. Root view is invalid or closed.")
             }
         }
@@ -341,9 +338,6 @@ class SimpleTooltip(
         if (contentView is TextView) {
             val tv = contentView as TextView
             tv.text = text
-        } else {
-            val tv = contentView.findViewById(textViewId) as TextView
-            tv.text = text
         }
 
         contentView.setPadding(padding.toInt(), padding.toInt(), padding.toInt(), padding.toInt())
@@ -355,9 +349,9 @@ class SimpleTooltip(
         linearLayout.orientation = if (
                 arrowDirection == ArrowDrawable.LEFT || arrowDirection == ArrowDrawable.RIGHT
         ) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL
-        val layoutPadding = if (animated) animationPadding else 0
+        val layoutPadding = (if (animated) animationPadding else 0f).toInt()
         linearLayout.setPadding(
-                0, 0, 0, 0
+                layoutPadding, layoutPadding, layoutPadding, layoutPadding
         )
 
         if (showArrow) {
