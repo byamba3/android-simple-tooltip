@@ -37,7 +37,6 @@ import android.widget.EditText
 import io.github.douglasjunior.androidSimpleTooltip.OverlayView
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltipUtils
-import kotlinx.android.synthetic.main.dialog.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -213,7 +212,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             btnInDialog.setOnClickListener {
                 SimpleTooltip(
                         context = this@MainActivity,
-                        anchorView = btn_in_dialog,
+                        anchorView = btnInDialog,
                         text = getString(R.string.btn_in_dialog),
                         gravity = Gravity.BOTTOM,
                         animated = true,
