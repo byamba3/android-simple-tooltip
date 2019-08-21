@@ -33,8 +33,9 @@ import android.support.annotation.ColorInt
  * Created by douglas on 09/05/16.
  */
 class ArrowDrawable internal constructor(
-        @ColorInt foregroundColor: Int,
-        private val direction: Int) : ColorDrawable() {
+    @ColorInt foregroundColor: Int,
+    private val direction: Int
+) : ColorDrawable() {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val backgroundColor: Int = Color.TRANSPARENT

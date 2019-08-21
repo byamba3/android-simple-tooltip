@@ -48,13 +48,23 @@ object SimpleTooltipUtils {
     fun calculeRectOnScreen(view: View): RectF {
         val location = IntArray(2)
         view.getLocationOnScreen(location)
-        return RectF(location[0].toFloat(), location[1].toFloat(), (location[0] + view.measuredWidth).toFloat(), (location[1] + view.measuredHeight).toFloat())
+        return RectF(
+            location[0].toFloat(),
+            location[1].toFloat(),
+            (location[0] + view.measuredWidth).toFloat(),
+            (location[1] + view.measuredHeight).toFloat()
+        )
     }
 
     fun calculeRectInWindow(view: View): RectF {
         val location = IntArray(2)
         view.getLocationInWindow(location)
-        return RectF(location[0].toFloat(), location[1].toFloat(), (location[0] + view.measuredWidth).toFloat(), (location[1] + view.measuredHeight).toFloat())
+        return RectF(
+            location[0].toFloat(),
+            location[1].toFloat(),
+            (location[0] + view.measuredWidth).toFloat(),
+            (location[1] + view.measuredHeight).toFloat()
+        )
     }
 
     fun dpFromPx(px: Float): Float {
@@ -103,7 +113,10 @@ object SimpleTooltipUtils {
         }
     }
 
-    fun removeOnGlobalLayoutListener(view: View, listener: ViewTreeObserver.OnGlobalLayoutListener) {
+    fun removeOnGlobalLayoutListener(
+        view: View,
+        listener: ViewTreeObserver.OnGlobalLayoutListener
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             view.viewTreeObserver.removeOnGlobalLayoutListener(listener)
         } else {

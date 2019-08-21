@@ -37,11 +37,12 @@ import android.view.View
  */
 @SuppressLint("ViewConstructor")
 class OverlayView internal constructor(
-        context: Context,
-        private var mAnchorView: View?,
-        private val highlightShape: Int,
-        private val mOffset: Float,
-        private val overlayWindowBackground: Int) : View(context) {
+    context: Context,
+    private var mAnchorView: View?,
+    private val highlightShape: Int,
+    private val mOffset: Float,
+    private val overlayWindowBackground: Int
+) : View(context) {
 
     private var bitmap: Bitmap? = null
     private var invalidated = true
@@ -94,10 +95,10 @@ class OverlayView internal constructor(
         val top = anchorRecr.top - overlayRecr.top
 
         val rect = RectF(
-                left - mOffset,
-                top - mOffset,
-                left + mAnchorView!!.measuredWidth.toFloat() + mOffset,
-                top + mAnchorView!!.measuredHeight.toFloat() + mOffset
+            left - mOffset,
+            top - mOffset,
+            left + mAnchorView!!.measuredWidth.toFloat() + mOffset,
+            top + mAnchorView!!.measuredHeight.toFloat() + mOffset
         )
 
         if (highlightShape == HIGHLIGHT_SHAPE_RECTANGULAR) {

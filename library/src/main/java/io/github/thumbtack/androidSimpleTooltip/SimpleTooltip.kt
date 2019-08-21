@@ -19,44 +19,44 @@ import android.widget.PopupWindow
 import android.widget.TextView
 
 class SimpleTooltip(
-        customViewLayout: View? = null,
-        useActivityRootView: Boolean = false,
-        private val context: Context,
-        private var dismissOnInsideTouch: Boolean = true,
-        private var dismissOnOutsideTouch: Boolean = true,
-        private var modal: Boolean = false,
-        private var text: CharSequence = "",
-        private var anchorView: View,
-        private var arrowDirection: Int = ArrowDrawable.AUTO,
-        private var gravity: Int = Gravity.BOTTOM,
-        private var transparentOverlay: Boolean = true,
-        private var overlayOffset: Float =
-                context.resources.getDimension(defaultOverlayOffsetRes),
-        private var overlayMatchParent: Boolean = true,
-        private var maxWidth: Float = 0f,
-        private var showArrow: Boolean = true,
-        private var arrowDrawable: Drawable? = null,
-        private var animated: Boolean = false,
-        private var margin: Float = context.resources.getDimension(defaultMarginRes),
-        private var padding: Float = context.resources.getDimension(defaultPaddingRes),
-        private var animationPadding: Float =
-                context.resources.getDimension(defaultAnimationPaddingRes),
-        private var onDismissListener: OnDismissListener? = null,
-        private var onShowListener: OnShowListener? = null,
-        private var animationDuration: Long =
-                context.resources.getInteger(defaultAnimationDurationRes).toLong(),
-        private var backgroundColor: Int =
-                SimpleTooltipUtils.getColor(context, defaultBackgroundColorRes),
-        private var textColor: Int = SimpleTooltipUtils.getColor(context, defaultTextColorRes),
-        private var arrowColor: Int = SimpleTooltipUtils.getColor(context, defaultArrowColorRes),
-        private var arrowHeight: Float = 0f,
-        private var arrowWidth: Float = 0f,
-        private var focusable: Boolean = false,
-        private var highlightShape: Int = OverlayView.HIGHLIGHT_SHAPE_OVAL,
-        private var width: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        private var height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        private var ignoreOverlay: Boolean = false,
-        private var overlayWindowBackgroundColor: Int = Color.BLACK
+    customViewLayout: View? = null,
+    useActivityRootView: Boolean = false,
+    private val context: Context,
+    private var dismissOnInsideTouch: Boolean = true,
+    private var dismissOnOutsideTouch: Boolean = true,
+    private var modal: Boolean = false,
+    private var text: CharSequence = "",
+    private var anchorView: View,
+    private var arrowDirection: Int = ArrowDrawable.AUTO,
+    private var gravity: Int = Gravity.BOTTOM,
+    private var transparentOverlay: Boolean = true,
+    private var overlayOffset: Float =
+        context.resources.getDimension(defaultOverlayOffsetRes),
+    private var overlayMatchParent: Boolean = true,
+    private var maxWidth: Float = 0f,
+    private var showArrow: Boolean = true,
+    private var arrowDrawable: Drawable? = null,
+    private var animated: Boolean = false,
+    private var margin: Float = context.resources.getDimension(defaultMarginRes),
+    private var padding: Float = context.resources.getDimension(defaultPaddingRes),
+    private var animationPadding: Float =
+        context.resources.getDimension(defaultAnimationPaddingRes),
+    private var onDismissListener: OnDismissListener? = null,
+    private var onShowListener: OnShowListener? = null,
+    private var animationDuration: Long =
+        context.resources.getInteger(defaultAnimationDurationRes).toLong(),
+    private var backgroundColor: Int =
+        SimpleTooltipUtils.getColor(context, defaultBackgroundColorRes),
+    private var textColor: Int = SimpleTooltipUtils.getColor(context, defaultTextColorRes),
+    private var arrowColor: Int = SimpleTooltipUtils.getColor(context, defaultArrowColorRes),
+    private var arrowHeight: Float = 0f,
+    private var arrowWidth: Float = 0f,
+    private var focusable: Boolean = false,
+    private var highlightShape: Int = OverlayView.HIGHLIGHT_SHAPE_OVAL,
+    private var width: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
+    private var height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
+    private var ignoreOverlay: Boolean = false,
+    private var overlayWindowBackgroundColor: Int = Color.BLACK
 ) : PopupWindow.OnDismissListener {
 
     private var popupWindow: PopupWindow? = null
@@ -104,7 +104,10 @@ class SimpleTooltip(
 
             if (maxWidth > 0 && contentView.width > maxWidth) {
                 SimpleTooltipUtils.setWidth(contentView, maxWidth)
-                popup.update(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                popup.update(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 return
             }
 
@@ -229,8 +232,8 @@ class SimpleTooltip(
     private fun configPopupWindow() {
         popupWindow = PopupWindow(context, null, defaultPopupWindowStyleRes).apply {
             setOnDismissListener(this@SimpleTooltip)
-            width = width
-            height = height
+            width = this@SimpleTooltip.width
+            height = this@SimpleTooltip.height
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             isOutsideTouchable = true
             isTouchable = true
@@ -239,8 +242,8 @@ class SimpleTooltip(
                 val y = event.y.toInt()
 
                 if (!dismissOnOutsideTouch && event.action == MotionEvent.ACTION_DOWN &&
-                        (x < 0 || x >= contentLayout.measuredWidth || y < 0 ||
-                                y >= contentLayout.measuredHeight)
+                    (x < 0 || x >= contentLayout.measuredWidth || y < 0 ||
+                            y >= contentLayout.measuredHeight)
                 ) {
                     return@OnTouchListener true
                 } else if (!dismissOnOutsideTouch && event.action == MotionEvent.ACTION_OUTSIDE) {
@@ -283,12 +286,12 @@ class SimpleTooltip(
             return
         }
         overlay = if (transparentOverlay) View(context) else OverlayView(
-                context, anchorView, highlightShape, overlayOffset, overlayWindowBackgroundColor
+            context, anchorView, highlightShape, overlayOffset, overlayWindowBackgroundColor
         )
         overlay?.let { overlay ->
             if (overlayMatchParent)
                 overlay.layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
                 )
             else {
                 rootView?.let {
@@ -329,7 +332,7 @@ class SimpleTooltip(
                     location.y = anchorCenter.y - popupWindow.contentView.height / 2f
                 }
                 else -> throw IllegalArgumentException(
-                        "Gravity must have be CENTER, START, END, TOP or BOTTOM."
+                    "Gravity must have be CENTER, START, END, TOP or BOTTOM."
                 )
             }
         }
@@ -347,14 +350,14 @@ class SimpleTooltip(
 
         val linearLayout = LinearLayout(context)
         linearLayout.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
         linearLayout.orientation = if (
-                arrowDirection == ArrowDrawable.LEFT || arrowDirection == ArrowDrawable.RIGHT
+            arrowDirection == ArrowDrawable.LEFT || arrowDirection == ArrowDrawable.RIGHT
         ) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL
         val layoutPadding = (if (animated) animationPadding else 0f).toInt()
         linearLayout.setPadding(
-                layoutPadding, layoutPadding, layoutPadding, layoutPadding
+            layoutPadding, layoutPadding, layoutPadding, layoutPadding
         )
 
         if (showArrow) {
@@ -364,11 +367,11 @@ class SimpleTooltip(
 
             if (arrowDirection == ArrowDrawable.TOP || arrowDirection == ArrowDrawable.BOTTOM) {
                 arrowLayoutParams = LinearLayout.LayoutParams(
-                        arrowWidth.toInt(), arrowHeight.toInt(), 0f
+                    arrowWidth.toInt(), arrowHeight.toInt(), 0f
                 )
             } else {
                 arrowLayoutParams = LinearLayout.LayoutParams(
-                        arrowHeight.toInt(), arrowWidth.toInt(), 0f
+                    arrowHeight.toInt(), arrowWidth.toInt(), 0f
                 )
             }
 
@@ -430,10 +433,10 @@ class SimpleTooltip(
             SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, arrowLayoutListener)
             SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, showLayoutListener)
             SimpleTooltipUtils.removeOnGlobalLayoutListener(
-                    it.contentView, animationLayoutListener
+                it.contentView, animationLayoutListener
             )
             SimpleTooltipUtils.removeOnGlobalLayoutListener(
-                    it.contentView, autoDismissLayoutListener
+                it.contentView, autoDismissLayoutListener
             )
             popupWindow = null
         }
@@ -444,13 +447,13 @@ class SimpleTooltip(
             "translationX"
 
         val anim1 = ObjectAnimator.ofFloat(
-                contentLayout, property, -animationPadding, animationPadding
+            contentLayout, property, -animationPadding, animationPadding
         )
         anim1.duration = animationDuration
         anim1.interpolator = AccelerateDecelerateInterpolator()
 
         val anim2 = ObjectAnimator.ofFloat(
-                contentLayout, property, animationPadding, -animationPadding
+            contentLayout, property, animationPadding, -animationPadding
         )
         anim2.duration = animationDuration
         anim2.interpolator = AccelerateDecelerateInterpolator()
