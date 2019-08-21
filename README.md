@@ -10,6 +10,13 @@
 
 A simple library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html) to create Tooltips on Android.
 
+## New Added Features in the Fork:
+- Converted Java classes to Kotlin. 
+- Replaced Builder classes with Kotlin named params
+- Added safe null handling
+- Added a new param `useActivityRootView`
+- Updated `build.gradle` to modern standards
+
 ## Features
 
  - Working from Android 2.1 (API 7) *Note: animation above 3.0 (API 11)*
