@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 26
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "io.github.douglasjunior.androidSimpleTooltip.sample"
-        minSdkVersion 11
-        targetSdkVersion 24
+        minSdkVersion 16
+        targetSdkVersion 26
         versionCode 1
         versionName "0.0.1"
     }
@@ -22,12 +22,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile project(':library')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation project(':library')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    //compile 'com.github.douglasjunior:android-simple-tooltip:0.2.1'
 }
 repositories {
     mavenCentral()

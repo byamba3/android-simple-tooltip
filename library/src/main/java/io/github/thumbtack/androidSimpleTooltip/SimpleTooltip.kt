@@ -19,7 +19,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 
 class SimpleTooltip(
-        customContentView: View? = null,
+        customViewLayout: View? = null,
         useActivityRootView: Boolean = false,
         private val context: Context,
         private var dismissOnInsideTouch: Boolean = true,
@@ -31,24 +31,24 @@ class SimpleTooltip(
         private var gravity: Int = Gravity.BOTTOM,
         private var transparentOverlay: Boolean = true,
         private var overlayOffset: Float =
-                context.resources.getDimension(mDefaultOverlayOffsetRes),
+                context.resources.getDimension(defaultOverlayOffsetRes),
         private var overlayMatchParent: Boolean = true,
         private var maxWidth: Float = 0f,
         private var showArrow: Boolean = true,
         private var arrowDrawable: Drawable? = null,
         private var animated: Boolean = false,
-        private var margin: Float = context.resources.getDimension(mDefaultMarginRes),
-        private var padding: Float = context.resources.getDimension(mDefaultPaddingRes),
+        private var margin: Float = context.resources.getDimension(defaultMarginRes),
+        private var padding: Float = context.resources.getDimension(defaultPaddingRes),
         private var animationPadding: Float =
-                context.resources.getDimension(mDefaultAnimationPaddingRes),
+                context.resources.getDimension(defaultAnimationPaddingRes),
         private var onDismissListener: OnDismissListener? = null,
         private var onShowListener: OnShowListener? = null,
         private var animationDuration: Long =
-                context.resources.getInteger(mDefaultAnimationDurationRes).toLong(),
+                context.resources.getInteger(defaultAnimationDurationRes).toLong(),
         private var backgroundColor: Int =
-                SimpleTooltipUtils.getColor(context, mDefaultBackgroundColorRes),
-        private var textColor: Int = SimpleTooltipUtils.getColor(context, mDefaultTextColorRes),
-        private var arrowColor: Int = SimpleTooltipUtils.getColor(context, mDefaultArrowColorRes),
+                SimpleTooltipUtils.getColor(context, defaultBackgroundColorRes),
+        private var textColor: Int = SimpleTooltipUtils.getColor(context, defaultTextColorRes),
+        private var arrowColor: Int = SimpleTooltipUtils.getColor(context, defaultArrowColorRes),
         private var arrowHeight: Float = 0f,
         private var arrowWidth: Float = 0f,
         private var focusable: Boolean = false,
@@ -67,8 +67,8 @@ class SimpleTooltip(
     private var rootView: ViewGroup? = SimpleTooltipUtils.findFrameLayout(anchorView)
     private var dismissed = false
     private val contentView: View by lazy {
-        customContentView ?: TextView(context).also {
-            SimpleTooltipUtils.setTextAppearance(it, mDefaultTextAppearanceRes)
+        customViewLayout ?: TextView(context).also {
+            SimpleTooltipUtils.setTextAppearance(it, defaultTextAppearanceRes)
             it.setBackgroundColor(backgroundColor)
             it.setTextColor(textColor)
         }
@@ -80,23 +80,23 @@ class SimpleTooltip(
         private val TAG = SimpleTooltip::class.java.simpleName
 
         // Default Resources
-        private val mDefaultPopupWindowStyleRes = android.R.attr.popupWindowStyle
-        private val mDefaultTextAppearanceRes = R.style.simpletooltip_default
-        private val mDefaultBackgroundColorRes = R.color.simpletooltip_background
-        private val mDefaultTextColorRes = R.color.simpletooltip_text
-        private val mDefaultArrowColorRes = R.color.simpletooltip_arrow
-        private val mDefaultMarginRes = R.dimen.simpletooltip_margin
-        private val mDefaultPaddingRes = R.dimen.simpletooltip_padding
-        private val mDefaultAnimationPaddingRes = R.dimen.simpletooltip_animation_padding
-        private val mDefaultAnimationDurationRes = R.integer.simpletooltip_animation_duration
-        private val mDefaultArrowWidthRes = R.dimen.simpletooltip_arrow_width
-        private val mDefaultArrowHeightRes = R.dimen.simpletooltip_arrow_height
-        private val mDefaultOverlayOffsetRes = R.dimen.simpletooltip_overlay_offset
+        private val defaultPopupWindowStyleRes = android.R.attr.popupWindowStyle
+        private val defaultTextAppearanceRes = R.style.simpletooltip_default
+        private val defaultBackgroundColorRes = R.color.simpletooltip_background
+        private val defaultTextColorRes = R.color.simpletooltip_text
+        private val defaultArrowColorRes = R.color.simpletooltip_arrow
+        private val defaultMarginRes = R.dimen.simpletooltip_margin
+        private val defaultPaddingRes = R.dimen.simpletooltip_padding
+        private val defaultAnimationPaddingRes = R.dimen.simpletooltip_animation_padding
+        private val defaultAnimationDurationRes = R.integer.simpletooltip_animation_duration
+        private val defaultArrowWidthRes = R.dimen.simpletooltip_arrow_width
+        private val defaultArrowHeightRes = R.dimen.simpletooltip_arrow_height
+        private val defaultOverlayOffsetRes = R.dimen.simpletooltip_overlay_offset
     }
 
     private val overlayTouchListener = View.OnTouchListener { v, event -> modal }
 
-    private val mLocationLayoutListener = object
+    private val locationLayoutListener = object
         : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val popup = popupWindow
@@ -109,7 +109,7 @@ class SimpleTooltip(
             }
 
             SimpleTooltipUtils.removeOnGlobalLayoutListener(popup.contentView, this)
-            popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(mArrowLayoutListener)
+            popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(arrowLayoutListener)
             val location = calculatePopupLocation()
             popup.isClippingEnabled = true
             popup.update(location.x.toInt(), location.y.toInt(), popup.width, popup.height)
@@ -118,7 +118,7 @@ class SimpleTooltip(
         }
     }
 
-    private val mArrowLayoutListener = object
+    private val arrowLayoutListener = object
         : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val popup = popupWindow
@@ -126,8 +126,8 @@ class SimpleTooltip(
 
             SimpleTooltipUtils.removeOnGlobalLayoutListener(popup.contentView, this)
 
-            popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(mAnimationLayoutListener)
-            popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(mShowLayoutListener)
+            popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(animationLayoutListener)
+            popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(showLayoutListener)
             if (showArrow) {
                 val achorRect = SimpleTooltipUtils.calculeRectOnScreen(anchorView)
                 val contentViewRect = SimpleTooltipUtils.calculeRectOnScreen(contentLayout)
@@ -167,7 +167,7 @@ class SimpleTooltip(
         }
     }
 
-    private val mShowLayoutListener = object
+    private val showLayoutListener = object
         : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val popup = popupWindow
@@ -182,7 +182,7 @@ class SimpleTooltip(
         }
     }
 
-    private val mAnimationLayoutListener = object
+    private val animationLayoutListener = object
         : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val popup = popupWindow
@@ -200,7 +200,7 @@ class SimpleTooltip(
      * <div class="pt">Listener utilizado para chamar o <tt>SimpleTooltip#dismiss()</tt> quando a <tt>View</tt> root é encerrada sem que a tooltip seja fechada.
      * Pode ocorrer quando a tooltip é utilizada dentro de Dialogs.</div>
      */
-    private val mAutoDismissLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+    private val autoDismissLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
         val popup = popupWindow
         if (popup == null || dismissed) return@OnGlobalLayoutListener
 
@@ -214,9 +214,9 @@ class SimpleTooltip(
             if (arrowDrawable == null)
                 arrowDrawable = ArrowDrawable(arrowColor, arrowDirection)
             if (arrowWidth == 0f)
-                arrowWidth = context.resources.getDimension(mDefaultArrowWidthRes)
+                arrowWidth = context.resources.getDimension(defaultArrowWidthRes)
             if (arrowHeight == 0f)
-                arrowHeight = context.resources.getDimension(mDefaultArrowHeightRes)
+                arrowHeight = context.resources.getDimension(defaultArrowHeightRes)
         }
         if (useActivityRootView && overlayMatchParent) {
             rootView = (context as Activity).window.decorView.rootView as ViewGroup
@@ -227,7 +227,7 @@ class SimpleTooltip(
     }
 
     private fun configPopupWindow() {
-        popupWindow = PopupWindow(context, null, mDefaultPopupWindowStyleRes).apply {
+        popupWindow = PopupWindow(context, null, defaultPopupWindowStyleRes).apply {
             setOnDismissListener(this@SimpleTooltip)
             width = width
             height = height
@@ -259,8 +259,8 @@ class SimpleTooltip(
     fun show() {
         verifyDismissed()
 
-        contentLayout.viewTreeObserver.addOnGlobalLayoutListener(mLocationLayoutListener)
-        contentLayout.viewTreeObserver.addOnGlobalLayoutListener(mAutoDismissLayoutListener)
+        contentLayout.viewTreeObserver.addOnGlobalLayoutListener(locationLayoutListener)
+        contentLayout.viewTreeObserver.addOnGlobalLayoutListener(autoDismissLayoutListener)
 
         rootView?.let {
             it.post {
@@ -426,14 +426,14 @@ class SimpleTooltip(
         onDismissListener = null
 
         popupWindow?.let {
-            SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, mLocationLayoutListener)
-            SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, mArrowLayoutListener)
-            SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, mShowLayoutListener)
+            SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, locationLayoutListener)
+            SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, arrowLayoutListener)
+            SimpleTooltipUtils.removeOnGlobalLayoutListener(it.contentView, showLayoutListener)
             SimpleTooltipUtils.removeOnGlobalLayoutListener(
-                    it.contentView, mAnimationLayoutListener
+                    it.contentView, animationLayoutListener
             )
             SimpleTooltipUtils.removeOnGlobalLayoutListener(
-                    it.contentView, mAutoDismissLayoutListener
+                    it.contentView, autoDismissLayoutListener
             )
             popupWindow = null
         }
