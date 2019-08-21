@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PointF
@@ -19,6 +20,7 @@ import android.widget.TextView
 
 class SimpleTooltip(
         customContentView: View? = null,
+        useActivityRootView: Boolean = false,
         private val context: Context,
         private var dismissOnInsideTouch: Boolean = true,
         private var dismissOnOutsideTouch: Boolean = true,
@@ -29,7 +31,7 @@ class SimpleTooltip(
         private var gravity: Int = Gravity.BOTTOM,
         private var transparentOverlay: Boolean = true,
         private var overlayOffset: Float =
-                context.getResources().getDimension(mDefaultOverlayOffsetRes),
+                context.resources.getDimension(mDefaultOverlayOffsetRes),
         private var overlayMatchParent: Boolean = true,
         private var maxWidth: Float = 0f,
         private var showArrow: Boolean = true,
@@ -108,7 +110,7 @@ class SimpleTooltip(
 
             SimpleTooltipUtils.removeOnGlobalLayoutListener(popup.contentView, this)
             popup.contentView.viewTreeObserver.addOnGlobalLayoutListener(mArrowLayoutListener)
-            val location = calculePopupLocation()
+            val location = calculatePopupLocation()
             popup.isClippingEnabled = true
             popup.update(location.x.toInt(), location.y.toInt(), popup.width, popup.height)
             popup.contentView.requestLayout()
@@ -173,7 +175,6 @@ class SimpleTooltip(
 
             SimpleTooltipUtils.removeOnGlobalLayoutListener(popup.contentView, this)
 
-
             onShowListener?.onShow(this@SimpleTooltip)
             onShowListener = null
 
@@ -217,14 +218,16 @@ class SimpleTooltip(
             if (arrowHeight == 0f)
                 arrowHeight = context.resources.getDimension(mDefaultArrowHeightRes)
         }
+        if (useActivityRootView && overlayMatchParent) {
+            rootView = (context as Activity).window.decorView.rootView as ViewGroup
+        }
 
         configPopupWindow()
         configContentView()
     }
 
     private fun configPopupWindow() {
-        popupWindow = PopupWindow(context, null, mDefaultPopupWindowStyleRes)
-        popupWindow?.run {
+        popupWindow = PopupWindow(context, null, mDefaultPopupWindowStyleRes).apply {
             setOnDismissListener(this@SimpleTooltip)
             width = width
             height = height
@@ -261,8 +264,8 @@ class SimpleTooltip(
 
         rootView?.let {
             it.post {
-                if (rootView?.isShown == true) {
-                    popupWindow?.showAtLocation(rootView, Gravity.NO_GRAVITY, it.width, it.height)
+                if (it.isShown == true) {
+                    popupWindow?.showAtLocation(it, Gravity.NO_GRAVITY, it.width, it.height)
                 } else
                     Log.e(TAG, "Tooltip can't be shown. Root view is invalid or closed.")
             }
@@ -297,7 +300,7 @@ class SimpleTooltip(
         }
     }
 
-    private fun calculePopupLocation(): PointF {
+    private fun calculatePopupLocation(): PointF {
         val location = PointF()
 
         val anchorRect = SimpleTooltipUtils.calculeRectInWindow(anchorView)

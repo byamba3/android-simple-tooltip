@@ -54,10 +54,10 @@ class OverlayView internal constructor(
         }
 
     override fun dispatchDraw(canvas: Canvas) {
-        if (invalidated || bitmap == null || bitmap!!.isRecycled)
+        if (invalidated || bitmap == null || bitmap?.isRecycled == true)
             createWindowFrame()
         // The bitmap is checked again because of Android memory cleanup behavior. (See #42)
-        if (bitmap != null && !bitmap!!.isRecycled)
+        if (bitmap != null && bitmap?.isRecycled == false)
             canvas.drawBitmap(bitmap!!, 0f, 0f, null)
     }
 
@@ -67,8 +67,11 @@ class OverlayView internal constructor(
         if (width <= 0 || height <= 0)
             return
 
-        if (bitmap != null && !bitmap!!.isRecycled)
-            bitmap!!.recycle()
+        bitmap?.let {
+            if (!it.isRecycled)
+                it.recycle()
+        }
+
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
         val osCanvas = Canvas(bitmap!!)

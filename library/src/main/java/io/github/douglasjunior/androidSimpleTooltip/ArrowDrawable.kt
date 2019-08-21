@@ -34,15 +34,14 @@ import android.support.annotation.ColorInt
  */
 class ArrowDrawable internal constructor(
         @ColorInt foregroundColor: Int,
-        private val mDirection: Int) : ColorDrawable() {
+        private val direction: Int) : ColorDrawable() {
 
-    private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val mBackgroundColor: Int
-    private var mPath: Path? = null
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val backgroundColor: Int = Color.TRANSPARENT
+    private var path: Path? = null
 
     init {
-        this.mBackgroundColor = Color.TRANSPARENT
-        this.mPaint.color = foregroundColor
+        this.paint.color = foregroundColor
     }
 
     override fun onBoundsChange(bounds: Rect) {
@@ -52,63 +51,63 @@ class ArrowDrawable internal constructor(
 
     @Synchronized
     private fun updatePath(bounds: Rect) {
-        mPath = Path()
+        path = Path().apply {
+            when (direction) {
+                LEFT -> {
+                    moveTo(bounds.width().toFloat(), bounds.height().toFloat())
+                    lineTo(0f, (bounds.height() / 2).toFloat())
+                    lineTo(bounds.width().toFloat(), 0f)
+                    lineTo(bounds.width().toFloat(), bounds.height().toFloat())
+                }
+                TOP -> {
+                    moveTo(0f, bounds.height().toFloat())
+                    lineTo((bounds.width() / 2).toFloat(), 0f)
+                    lineTo(bounds.width().toFloat(), bounds.height().toFloat())
+                    lineTo(0f, bounds.height().toFloat())
+                }
+                RIGHT -> {
+                    moveTo(0f, 0f)
+                    lineTo(bounds.width().toFloat(), (bounds.height() / 2).toFloat())
+                    lineTo(0f, bounds.height().toFloat())
+                    lineTo(0f, 0f)
+                }
+                BOTTOM -> {
+                    moveTo(0f, 0f)
+                    lineTo((bounds.width() / 2).toFloat(), bounds.height().toFloat())
+                    lineTo(bounds.width().toFloat(), 0f)
+                    lineTo(0f, 0f)
+                }
+            }
 
-        when (mDirection) {
-            LEFT -> {
-                mPath!!.moveTo(bounds.width().toFloat(), bounds.height().toFloat())
-                mPath!!.lineTo(0f, (bounds.height() / 2).toFloat())
-                mPath!!.lineTo(bounds.width().toFloat(), 0f)
-                mPath!!.lineTo(bounds.width().toFloat(), bounds.height().toFloat())
-            }
-            TOP -> {
-                mPath!!.moveTo(0f, bounds.height().toFloat())
-                mPath!!.lineTo((bounds.width() / 2).toFloat(), 0f)
-                mPath!!.lineTo(bounds.width().toFloat(), bounds.height().toFloat())
-                mPath!!.lineTo(0f, bounds.height().toFloat())
-            }
-            RIGHT -> {
-                mPath!!.moveTo(0f, 0f)
-                mPath!!.lineTo(bounds.width().toFloat(), (bounds.height() / 2).toFloat())
-                mPath!!.lineTo(0f, bounds.height().toFloat())
-                mPath!!.lineTo(0f, 0f)
-            }
-            BOTTOM -> {
-                mPath!!.moveTo(0f, 0f)
-                mPath!!.lineTo((bounds.width() / 2).toFloat(), bounds.height().toFloat())
-                mPath!!.lineTo(bounds.width().toFloat(), 0f)
-                mPath!!.lineTo(0f, 0f)
-            }
+            close()
         }
-
-        mPath!!.close()
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawColor(mBackgroundColor)
-        if (mPath == null)
+        canvas.drawColor(backgroundColor)
+        if (path == null)
             updatePath(bounds)
-        canvas.drawPath(mPath!!, mPaint)
+        path?.let { canvas.drawPath(it, paint) }
     }
 
     override fun setAlpha(alpha: Int) {
-        mPaint.alpha = alpha
+        paint.alpha = alpha
     }
 
     override fun setColor(@ColorInt color: Int) {
-        mPaint.color = color
+        paint.color = color
     }
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
-        mPaint.colorFilter = colorFilter
+        paint.colorFilter = colorFilter
     }
 
     override fun getOpacity(): Int {
-        if (mPaint.colorFilter != null) {
+        if (paint.colorFilter != null) {
             return PixelFormat.TRANSLUCENT
         }
 
-        when (mPaint.color.ushr(24)) {
+        when (paint.color.ushr(24)) {
             255 -> return PixelFormat.OPAQUE
             0 -> return PixelFormat.TRANSPARENT
         }

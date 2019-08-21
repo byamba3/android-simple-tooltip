@@ -65,186 +65,189 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if (v.id == R.id.fab) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = "Floating action Button",
-                    onDismissListener = object : SimpleTooltip.OnDismissListener {
-                        override fun onDismiss(tooltip: SimpleTooltip) {
-                            println("dismiss $tooltip")
-                        }
-                    },
-                    onShowListener = object : SimpleTooltip.OnShowListener {
-                        override fun onShow(tooltip: SimpleTooltip) {
-                            println("show $tooltip")
-                        }
-                    },
-                    gravity = Gravity.START
-            ).show()
-
-        } else if (v.id == R.id.btn_simple) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_simple),
-                    gravity = Gravity.END
-            ).show()
-
-        } else if (v.id == R.id.btn_animated) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_animated),
-                    gravity = Gravity.TOP,
-                    animated = true
-            ).show()
-
-        } else if (v.id == R.id.btn_overlay) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_overlay),
-                    gravity = Gravity.START,
-                    animated = true,
-                    transparentOverlay = false,
-                    overlayWindowBackgroundColor = Color.BLACK
-            ).show()
-
-        } else if (v.id == R.id.btn_maxwidth) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth),
-                    gravity = Gravity.END,
-                    maxWidth = R.dimen.simpletooltip_max_width.toFloat()
-            ).show()
-
-        } else if (v.id == R.id.btn_outside) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_outside),
-                    gravity = Gravity.BOTTOM,
-                    dismissOnOutsideTouch = true,
-                    dismissOnInsideTouch = false
-            ).show()
-
-        } else if (v.id == R.id.btn_inside) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_inside),
-                    gravity = Gravity.START,
-                    dismissOnOutsideTouch = false,
-                    dismissOnInsideTouch = true
-            ).show()
-
-        } else if (v.id == R.id.btn_inside_modal) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_inside_modal),
-                    gravity = Gravity.END,
-                    dismissOnOutsideTouch = false,
-                    dismissOnInsideTouch = true,
-                    modal = true
-            ).show()
-
-        } else if (v.id == R.id.btn_modal_custom) {
-            val tooltip = SimpleTooltip(
-                    context = this@MainActivity,
-                    anchorView = v,
-                    text = getString(R.string.btn_modal_custom),
-                    gravity = Gravity.TOP,
-                    dismissOnOutsideTouch = false,
-                    dismissOnInsideTouch = false,
-                    modal = true,
-                    animated = true,
-                    animationDuration = 2000,
-                    animationPadding = SimpleTooltipUtils.pxFromDp(50f),
-                    customContentView = layoutInflater.inflate(R.layout.tooltip_custom, null, false)
-            )
-
-            val editText = tooltip.findViewById(R.id.ed_text) as EditText
-
-            tooltip.findViewById<Button>(R.id.btn_next).setOnClickListener {
-                if (tooltip.isShowing)
-                    tooltip.dismiss()
+        when (v.id) {
+            R.id.fab -> {
                 SimpleTooltip(
-                        context = v.context,
+                        context = this,
                         anchorView = v,
-                        text = editText.text,
-                        gravity = Gravity.BOTTOM
+                        text = "Floating action Button",
+                        onDismissListener = object : SimpleTooltip.OnDismissListener {
+                            override fun onDismiss(tooltip: SimpleTooltip) {
+                                println("dismiss $tooltip")
+                            }
+                        },
+                        onShowListener = object : SimpleTooltip.OnShowListener {
+                            override fun onShow(tooltip: SimpleTooltip) {
+                                println("show $tooltip")
+                            }
+                        },
+                        gravity = Gravity.START
                 ).show()
             }
-
-            tooltip.show()
-        } else if (v.id == R.id.btn_no_arrow) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_no_arrow),
-                    gravity = Gravity.START,
-                    showArrow = false,
-                    modal = true,
-                    animated = true
-            ).show()
-
-        } else if (v.id == R.id.btn_custom_arrow) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_custom_arrow),
-                    gravity = Gravity.END,
-                    modal = true,
-                    arrowDrawable = SimpleTooltipUtils.getDrawable(this, android.R.drawable.ic_media_previous),
-                    arrowHeight = SimpleTooltipUtils.pxFromDp(50f),
-                    arrowWidth = SimpleTooltipUtils.pxFromDp(50f)
-            ).show()
-
-        } else if (v.id == R.id.btn_dialog) {
-            val dialog = Dialog(this@MainActivity)
-            dialog.setContentView(R.layout.dialog)
-            dialog.show()
-
-            val btnInDialog = dialog.findViewById(R.id.btn_in_dialog) as Button
-            btnInDialog.setOnClickListener {
+            R.id.btn_simple -> {
                 SimpleTooltip(
-                        context = this@MainActivity,
-                        anchorView = btnInDialog,
-                        text = getString(R.string.btn_in_dialog),
-                        gravity = Gravity.BOTTOM,
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_simple),
+                        gravity = Gravity.END
+                ).show()
+            }
+            R.id.btn_animated -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_animated),
+                        gravity = Gravity.TOP,
+                        animated = true
+                ).show()
+            }
+            R.id.btn_overlay -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_overlay),
+                        gravity = Gravity.START,
                         animated = true,
                         transparentOverlay = false,
-                        overlayMatchParent = false
+                        overlayWindowBackgroundColor = Color.BLACK
                 ).show()
             }
+            R.id.btn_maxwidth -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth) + getString(R.string.btn_maxwidth),
+                        gravity = Gravity.END,
+                        maxWidth = R.dimen.simpletooltip_max_width.toFloat()
+                ).show()
+            }
+            R.id.btn_outside -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_outside),
+                        gravity = Gravity.BOTTOM,
+                        dismissOnOutsideTouch = true,
+                        dismissOnInsideTouch = false
+                ).show()
+            }
+            R.id.btn_inside -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_inside),
+                        gravity = Gravity.START,
+                        dismissOnOutsideTouch = false,
+                        dismissOnInsideTouch = true
+                ).show()
+            }
+            R.id.btn_inside_modal -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_inside_modal),
+                        gravity = Gravity.END,
+                        dismissOnOutsideTouch = false,
+                        dismissOnInsideTouch = true,
+                        modal = true
+                ).show()
+            }
+            R.id.btn_modal_custom -> {
+                val tooltip = SimpleTooltip(
+                        context = this@MainActivity,
+                        anchorView = v,
+                        text = getString(R.string.btn_modal_custom),
+                        gravity = Gravity.TOP,
+                        dismissOnOutsideTouch = false,
+                        dismissOnInsideTouch = false,
+                        modal = true,
+                        animated = true,
+                        animationDuration = 2000,
+                        animationPadding = SimpleTooltipUtils.pxFromDp(50f),
+                        customContentView = layoutInflater.inflate(R.layout.tooltip_custom, null, false),
+                        focusable = true
+                )
 
-            val btnClose = dialog.findViewById(R.id.btn_close) as Button
-            btnClose.setOnClickListener { dialog.dismiss() }
+                val editText = tooltip.findViewById(R.id.ed_text) as EditText
 
-        } else if (v.id == R.id.btn_center) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v.rootView,
-                    text = getString(R.string.btn_center),
-                    showArrow = false,
-                    gravity = Gravity.CENTER
-            ).show()
+                tooltip.findViewById<Button>(R.id.btn_next).setOnClickListener {
+                    if (tooltip.isShowing)
+                        tooltip.dismiss()
+                    SimpleTooltip(
+                            context = v.context,
+                            anchorView = v,
+                            text = editText.text,
+                            gravity = Gravity.BOTTOM
+                    ).show()
+                }
 
-        } else if (v.id == R.id.btn_overlay_rect) {
-            SimpleTooltip(
-                    context = this,
-                    anchorView = v,
-                    text = getString(R.string.btn_overlay_rect),
-                    gravity = Gravity.END,
-                    animated = true,
-                    transparentOverlay = false,
-                    highlightShape = OverlayView.HIGHLIGHT_SHAPE_RECTANGULAR,
-                    overlayOffset = 0f
-            ).show()
+                tooltip.show()
+            }
+            R.id.btn_no_arrow -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_no_arrow),
+                        gravity = Gravity.START,
+                        showArrow = false,
+                        modal = true,
+                        animated = true
+                ).show()
+            }
+            R.id.btn_custom_arrow -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_custom_arrow),
+                        gravity = Gravity.END,
+                        modal = true,
+                        arrowDrawable = SimpleTooltipUtils.getDrawable(this, android.R.drawable.ic_media_previous),
+                        arrowHeight = SimpleTooltipUtils.pxFromDp(50f),
+                        arrowWidth = SimpleTooltipUtils.pxFromDp(50f)
+                ).show()
+            }
+            R.id.btn_dialog -> {
+                val dialog = Dialog(this@MainActivity)
+                dialog.setContentView(R.layout.dialog)
+                dialog.show()
 
+                val btnInDialog = dialog.findViewById(R.id.btn_in_dialog) as Button
+                btnInDialog.setOnClickListener {
+                    SimpleTooltip(
+                            context = this@MainActivity,
+                            anchorView = btnInDialog,
+                            text = getString(R.string.btn_in_dialog),
+                            gravity = Gravity.BOTTOM,
+                            animated = true,
+                            transparentOverlay = false,
+                            overlayMatchParent = true
+                    ).show()
+                }
+
+                val btnClose = dialog.findViewById(R.id.btn_close) as Button
+                btnClose.setOnClickListener { dialog.dismiss() }
+            }
+            R.id.btn_center -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v.rootView,
+                        text = getString(R.string.btn_center),
+                        showArrow = false,
+                        gravity = Gravity.CENTER
+                ).show()
+            }
+            R.id.btn_overlay_rect -> {
+                SimpleTooltip(
+                        context = this,
+                        anchorView = v,
+                        text = getString(R.string.btn_overlay_rect),
+                        gravity = Gravity.END,
+                        animated = true,
+                        transparentOverlay = false,
+                        highlightShape = OverlayView.HIGHLIGHT_SHAPE_RECTANGULAR,
+                        overlayOffset = 0f
+                ).show()
+            }
         }
     }
 }
