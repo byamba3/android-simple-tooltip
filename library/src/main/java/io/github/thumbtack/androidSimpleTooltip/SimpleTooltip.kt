@@ -1,4 +1,4 @@
-package io.github.douglasjunior.androidSimpleTooltip
+package io.github.thumbtack.androidSimpleTooltip
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

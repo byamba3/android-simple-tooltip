@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.douglasjunior.androidSimpleTooltip">
+    package="io.github.thumbtack.androidSimpleTooltip">
 
     <application
         android:supportsRtl="true">

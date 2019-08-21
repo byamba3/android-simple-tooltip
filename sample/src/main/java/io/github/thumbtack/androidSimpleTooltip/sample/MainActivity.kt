@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.github.douglasjunior.androidSimpleTooltip.sample
+package io.github.thumbtack.androidSimpleTooltip.sample
 
 import android.app.Dialog
 import android.graphics.Color
@@ -34,9 +34,9 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import io.github.douglasjunior.androidSimpleTooltip.OverlayView
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltipUtils
+import io.github.thumbtack.androidSimpleTooltip.OverlayView
+import io.github.thumbtack.androidSimpleTooltip.SimpleTooltip
+import io.github.thumbtack.androidSimpleTooltip.SimpleTooltipUtils
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 

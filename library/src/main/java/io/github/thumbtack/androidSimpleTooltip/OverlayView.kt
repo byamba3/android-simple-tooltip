@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.github.douglasjunior.androidSimpleTooltip
+package io.github.thumbtack.androidSimpleTooltip
 
 import android.annotation.SuppressLint
 import android.content.Context
