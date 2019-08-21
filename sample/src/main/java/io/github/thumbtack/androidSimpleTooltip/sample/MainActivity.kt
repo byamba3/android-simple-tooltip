@@ -46,22 +46,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener(this)
 
-        findViewById(R.id.btn_simple).setOnClickListener(this)
-        findViewById(R.id.btn_animated).setOnClickListener(this)
-        findViewById(R.id.btn_overlay).setOnClickListener(this)
-        findViewById(R.id.btn_maxwidth).setOnClickListener(this)
-        findViewById(R.id.btn_outside).setOnClickListener(this)
-        findViewById(R.id.btn_inside).setOnClickListener(this)
-        findViewById(R.id.btn_inside_modal).setOnClickListener(this)
-        findViewById(R.id.btn_modal_custom).setOnClickListener(this)
-        findViewById(R.id.btn_no_arrow).setOnClickListener(this)
-        findViewById(R.id.btn_custom_arrow).setOnClickListener(this)
-        findViewById(R.id.btn_dialog).setOnClickListener(this)
-        findViewById(R.id.btn_center).setOnClickListener(this)
-        findViewById(R.id.btn_overlay_rect).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_simple).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_animated).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_overlay).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_maxwidth).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_outside).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_inside).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_inside_modal).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_modal_custom).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_no_arrow).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_custom_arrow).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_dialog).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_center).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_overlay_rect).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         animated = true,
                         animationDuration = 2000,
                         animationPadding = SimpleTooltipUtils.pxFromDp(50f),
-                        customContentView = layoutInflater.inflate(R.layout.tooltip_custom, null, false),
+                        customViewLayout = layoutInflater.inflate(R.layout.tooltip_custom, null, false),
                         focusable = true
                 )
 
@@ -220,7 +220,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             gravity = Gravity.BOTTOM,
                             animated = true,
                             transparentOverlay = false,
-                            overlayMatchParent = true
+                            overlayMatchParent = false
                     ).show()
                 }
 
