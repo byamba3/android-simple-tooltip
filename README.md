@@ -29,6 +29,21 @@ A simple library based on [PopupWindow](http://developer.android.com/intl/pt-br/
 ## Usage
 ### Basic
 
+#### New Kotlin Usage
+```kotlin
+val yourView = findViewById(R.id.your_view)
+
+SimpleTooltip(
+       context = this,
+       anchorView = yourView,
+       text = "This is a tooltip",
+       gravity = Gravity.END
+       animated = true,
+       transparentOverlay = false
+).show()
+```
+
+#### Old Usage
 ```java
 View yourView = findViewById(R.id.your_view);
 
