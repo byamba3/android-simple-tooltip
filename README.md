@@ -15,7 +15,7 @@ A simple library based on [PopupWindow](http://developer.android.com/intl/pt-br/
 - Replaced Builder classes with Kotlin named params
 - Added safe null handling
 - Added a new param `useActivityRootView` which allows overlays to be drawn on top of the activity. 
-- Added a new param `anchorBias` which indicates the positioning of the arrow on the anchor view. `0f` is far left, `0.5f` is center, and `1.0f` is far right.  
+- Added a new param `anchorBias` which indicates the positioning of the arrow on the anchor view. `0.0f` is far left, `0.5f` is center, and `1.0f` is far right.  
 - Updated `build.gradle` to modern standards
 
 ## Features
