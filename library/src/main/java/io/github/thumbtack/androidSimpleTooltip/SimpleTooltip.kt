@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import kotlin.math.abs
 
 class SimpleTooltip(
     customViewLayout: View? = null,
@@ -27,6 +28,7 @@ class SimpleTooltip(
     private var modal: Boolean = false,
     private var text: CharSequence = "",
     private var anchorView: View,
+    private val anchorBias: Float = 0.5f,
     private var arrowDirection: Int = ArrowDrawable.AUTO,
     private var gravity: Int = Gravity.BOTTOM,
     private var transparentOverlay: Boolean = true,
@@ -139,7 +141,9 @@ class SimpleTooltip(
                 if (arrowDirection == ArrowDrawable.TOP || arrowDirection == ArrowDrawable.BOTTOM) {
                     x = contentLayout.paddingLeft + SimpleTooltipUtils.pxFromDp(2f)
                     val centerX = contentViewRect.width() / 2f - arrowView.width / 2f
-                    val newX = centerX - (contentViewRect.centerX() - achorRect.centerX())
+                    val newX = centerX - (contentViewRect.centerX() -
+                            (minOf(achorRect.left, achorRect.right) +
+                                    abs(achorRect.right - achorRect.left) * anchorBias))
                     if (newX > x) {
                         if (newX + arrowView.width.toFloat() + x > contentViewRect.width()) {
                             x = contentViewRect.width() - arrowView.width.toFloat() - x
