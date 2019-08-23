@@ -58,7 +58,8 @@ class SimpleTooltip(
     private var width: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
     private var height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
     private var ignoreOverlay: Boolean = false,
-    private var overlayWindowBackgroundColor: Int = Color.BLACK
+    private var overlayWindowBackgroundColor: Int = Color.BLACK,
+    private var overlayHighlightAnchorView: Boolean = true
 ) : PopupWindow.OnDismissListener {
 
     private var popupWindow: PopupWindow? = null
@@ -289,9 +290,16 @@ class SimpleTooltip(
         if (ignoreOverlay) {
             return
         }
-        overlay = if (transparentOverlay) View(context) else OverlayView(
-            context, anchorView, highlightShape, overlayOffset, overlayWindowBackgroundColor
-        )
+
+        overlay = if (transparentOverlay) {
+            View(context)
+        } else {
+            val anchorView = if (overlayHighlightAnchorView) anchorView else null
+            OverlayView(
+                context, anchorView, highlightShape, overlayOffset, overlayWindowBackgroundColor
+            )
+        }
+
         overlay?.let { overlay ->
             if (overlayMatchParent)
                 overlay.layoutParams = ViewGroup.LayoutParams(

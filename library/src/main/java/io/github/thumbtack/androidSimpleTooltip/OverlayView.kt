@@ -88,23 +88,25 @@ class OverlayView internal constructor(
         paint.color = Color.TRANSPARENT
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT)
 
-        val anchorRecr = SimpleTooltipUtils.calculeRectInWindow(mAnchorView!!)
-        val overlayRecr = SimpleTooltipUtils.calculeRectInWindow(this)
+        mAnchorView?.let {
+            val anchorRecr = SimpleTooltipUtils.calculeRectInWindow(mAnchorView!!)
+            val overlayRecr = SimpleTooltipUtils.calculeRectInWindow(this)
 
-        val left = anchorRecr.left - overlayRecr.left
-        val top = anchorRecr.top - overlayRecr.top
+            val left = anchorRecr.left - overlayRecr.left
+            val top = anchorRecr.top - overlayRecr.top
 
-        val rect = RectF(
-            left - mOffset,
-            top - mOffset,
-            left + mAnchorView!!.measuredWidth.toFloat() + mOffset,
-            top + mAnchorView!!.measuredHeight.toFloat() + mOffset
-        )
+            val rect = RectF(
+                left - mOffset,
+                top - mOffset,
+                left + mAnchorView!!.measuredWidth.toFloat() + mOffset,
+                top + mAnchorView!!.measuredHeight.toFloat() + mOffset
+            )
 
-        if (highlightShape == HIGHLIGHT_SHAPE_RECTANGULAR) {
-            osCanvas.drawRect(rect, paint)
-        } else {
-            osCanvas.drawOval(rect, paint)
+            if (highlightShape == HIGHLIGHT_SHAPE_RECTANGULAR) {
+                osCanvas.drawRect(rect, paint)
+            } else {
+                osCanvas.drawOval(rect, paint)
+            }
         }
 
         invalidated = false
