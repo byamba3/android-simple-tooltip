@@ -14,7 +14,8 @@ A simple library based on [PopupWindow](http://developer.android.com/intl/pt-br/
 - Converted Java classes to Kotlin. 
 - Replaced Builder classes with Kotlin named params
 - Added safe null handling
-- Added a new param `useActivityRootView` which allows overlays to be drawn on top of the activity. 
+- Added a new param `useActivityRootView` which allows overlays to be drawn on top of the activity. This is useful when
+you have a deeply nested anchor view, but you want the overlay to be display like a dialog's overlay would, on top of the activity. 
 - Added a new param `anchorBias` which indicates the positioning of the arrow on the anchor view. `0.0f` is far left, `0.5f` is center, and `1.0f` is far right.  
 - Added a new param `overlayHighlightAnchorView` which determines whether to highlight the anchor view or not. If this is set to false, you can mimic a "dialog" like experience. 
 - Updated `build.gradle` to modern standards
