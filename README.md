@@ -18,6 +18,7 @@ A simple library based on [PopupWindow](http://developer.android.com/intl/pt-br/
 you have a deeply nested anchor view, but you want the overlay to be display like a dialog's overlay would, on top of the activity. 
 - Added a new param `anchorBias` which indicates the positioning of the arrow on the anchor view. `0.0f` is far left, `0.5f` is center, and `1.0f` is far right.  
 - Added a new param `overlayHighlightAnchorView` which determines whether to highlight the anchor view or not. If this is set to false, you can mimic a "dialog" like experience. 
+- Added an elevation option for drop shadow. If you want to use high values, you should adjust the windowPaddings accordingly. 
 - Updated `build.gradle` to modern standards
 
 ## Features
