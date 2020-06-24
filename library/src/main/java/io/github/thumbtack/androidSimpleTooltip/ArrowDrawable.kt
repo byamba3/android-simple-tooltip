@@ -26,7 +26,7 @@ package io.github.thumbtack.androidSimpleTooltip
 
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 /**
  * ArrowDrawable

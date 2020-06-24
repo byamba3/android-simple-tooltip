@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.PointF
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -30,6 +31,7 @@ class SimpleTooltip(
     private var anchorView: View,
     private val anchorBias: Float = 0.5f,
     private var arrowDirection: Int = ArrowDrawable.AUTO,
+    private var elevation: Float = context.resources.getDimension(defaultElevation),
     private var gravity: Int = Gravity.BOTTOM,
     private var transparentOverlay: Boolean = true,
     private var overlayOffset: Float =
@@ -59,7 +61,8 @@ class SimpleTooltip(
     private var height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
     private var ignoreOverlay: Boolean = false,
     private var overlayWindowBackgroundColor: Int = Color.BLACK,
-    private var overlayHighlightAnchorView: Boolean = true
+    private var overlayHighlightAnchorView: Boolean = true,
+    private var windowPadding: Float = context.resources.getDimension(defaultPaddingRes)
 ) : PopupWindow.OnDismissListener {
 
     private var popupWindow: PopupWindow? = null
@@ -92,6 +95,7 @@ class SimpleTooltip(
         private val defaultPaddingRes = R.dimen.simpletooltip_padding
         private val defaultAnimationPaddingRes = R.dimen.simpletooltip_animation_padding
         private val defaultAnimationDurationRes = R.integer.simpletooltip_animation_duration
+        private val defaultElevation = R.dimen.simpletooltip_elevation
         private val defaultArrowWidthRes = R.dimen.simpletooltip_arrow_width
         private val defaultArrowHeightRes = R.dimen.simpletooltip_arrow_height
         private val defaultOverlayOffsetRes = R.dimen.simpletooltip_overlay_offset
@@ -356,18 +360,17 @@ class SimpleTooltip(
         if (contentView is TextView) {
             val tv = contentView as TextView
             tv.text = text
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            contentView.elevation = elevation
         }
 
         contentView.setPadding(padding.toInt(), padding.toInt(), padding.toInt(), padding.toInt())
 
-        val linearLayout = LinearLayout(context)
-        linearLayout.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        val linearLayout = View.inflate(context, R.layout.tooltip_base, null) as LinearLayout
         linearLayout.orientation = if (
             arrowDirection == ArrowDrawable.LEFT || arrowDirection == ArrowDrawable.RIGHT
         ) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL
-        val layoutPadding = (if (animated) animationPadding else 0f).toInt()
+        val layoutPadding = (if (animated) animationPadding else windowPadding).toInt()
         linearLayout.setPadding(
             layoutPadding, layoutPadding, layoutPadding, layoutPadding
         )
@@ -387,6 +390,10 @@ class SimpleTooltip(
                 )
             }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                arrowView.elevation = elevation
+            }
+
             arrowLayoutParams.gravity = Gravity.CENTER
             arrowView.layoutParams = arrowLayoutParams
 
@@ -404,7 +411,6 @@ class SimpleTooltip(
         val contentViewParams = LinearLayout.LayoutParams(width, height, 0f)
         contentViewParams.gravity = Gravity.CENTER
         contentView.layoutParams = contentViewParams
-
         contentLayout = linearLayout
         contentLayout.visibility = View.INVISIBLE
         popupWindow?.contentView = contentLayout

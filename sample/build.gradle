@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 29
     buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "io.github.douglasjunior.androidSimpleTooltip.sample"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion 18
+        targetSdkVersion 29
         versionCode 1
         versionName "0.0.1"
     }
@@ -22,10 +22,13 @@ android {
 }
 
 dependencies {
+    def appcompat_version = "1.1.0"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
     implementation project(':library')
+
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation 'com.google.android.material:material:1.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
